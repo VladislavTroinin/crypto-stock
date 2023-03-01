@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="profile-ch1" author="troinin" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="profile"/>
+        </preConditions>
+
+        <addColumn tableName="profile">
+            <column name="role_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="profile"
+                                 baseColumnNames="role_id"
+                                 constraintName="fk_profile_role"
+                                 referencedTableName="role"
+                                 referencedColumnNames="role_id"/>
+
+        <rollback>
+           <dropForeignKeyConstraint baseTableName="profile"
+                                     constraintName="fk_profile_role"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
