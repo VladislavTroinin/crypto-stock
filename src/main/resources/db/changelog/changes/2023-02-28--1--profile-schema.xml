@@ -26,6 +26,10 @@
             <column name="secret_key" type="nvarchar2(256)">
                 <constraints nullable="false"/>
             </column>
+            <column name="role" type="nvarchar2(64)">
+                <constraints nullable="false"/>
+            </column>
+            <!-- -->
         </createTable>
 
         <rollback>
