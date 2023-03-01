@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ru.relex.cryptostock.model.ProfileRole;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -27,13 +28,8 @@ public class Profile {
     @Column(name = "email")
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id",
-            insertable = false,
-            updatable = false)
-    private Role role;
-
-    @Column(name = "secret_key")
-    private String secretKey;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private ProfileRole role;
 
 }
