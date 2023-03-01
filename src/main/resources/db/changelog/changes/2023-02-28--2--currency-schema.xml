@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="currency" author="troinin" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="currency"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="currency">
+            <column name="currency_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="nvarchar2(64)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="short_name" type="nvarchar2(3)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <!-- Курс валюты задаётся в рублях -->
+            <column name="rate" type="decimal" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="currency"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

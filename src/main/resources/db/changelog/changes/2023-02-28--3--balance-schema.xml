@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="balance" author="troinin" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="balance"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="balance">
+            <column name="balance_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="profile_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="count" type="decimal" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="balance"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_balance_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="profile_id"
+                                 onDelete="RESTRICT"/>
+
+        <addForeignKeyConstraint baseTableName="balance"
+                                 baseColumnNames="currency_id"
+                                 constraintName="fk_balance_currency"
+                                 referencedTableName="currency"
+                                 referencedColumnNames="currency_id"
+                                 onDelete="RESTRICT"/>
+
+        <addUniqueConstraint columnNames="profile_id, currency_id"
+                             constraintName="ak_balance"
+                             tableName="balance"/>
+
+        <rollback>
+            <dropUniqueConstraint tableName="balance"
+                                  constraintName="ak_balance"/>
+            <dropForeignKeyConstraint baseTableName="balance"
+                                      constraintName="fk_balance_currency"/>
+            <dropForeignKeyConstraint baseTableName="balance"
+                                      constraintName="fk_balance_profile"/>
+            <dropTable tableName="balance"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
