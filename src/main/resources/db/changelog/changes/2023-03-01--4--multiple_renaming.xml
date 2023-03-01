@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="renaming1" author="troinin" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <columnExists tableName="profile" columnName="username"/>
+                <columnExists tableName="balance" columnName="count"/>
+                <columnExists tableName="operation" columnName="count_delta"/>
+            </and>
+        </preConditions>
+
+        <renameColumn tableName="profile" oldColumnName="username" newColumnName="user_name"/>
+        <renameColumn tableName="balance" oldColumnName="count" newColumnName="amount"/>
+        <renameColumn tableName="operation" oldColumnName="count_delta" newColumnName="amount_delta"/>
+    </changeSet>
+
+</databaseChangeLog>
